@@ -7,11 +7,15 @@ function parseCommand(command) {
         case 'help':
             return help();
         case 'blog':
-            return appendIframe(BLOG_URL);
+            appendIframe(BLOG_URL);
+            console.log('blog');
+            return '';
         case 'wiki':
-            return appendIframe(WIKI_URL);
+            appendIframe(WIKI_URL);
+            return '';
         case `about`:
-           return appendIframe(ABOUT_URL);
+           appendIframe(ABOUT_URL);
+           return '';
         case `touch`:
            return createFile(splitCommand[1]);
         case 'ls':
@@ -42,10 +46,6 @@ function help() {
     return helpText;
 }
 
-function blog() {
-    return `opening blog`;
-}
-
 function notFound(command) {
     return `bash: ${command}: commmand not found`;
 }
@@ -68,13 +68,13 @@ function listFiles() {
     if (files.length === 0) {
         return "";
     } else {
-        return files.map(file => `${file}(${filesystem[file].length}`).join('\n');
+        return files.join('\n');
     }
 }
 
 function concatFiles(filenames) {
     if (filenames.length === 0) return 'usage: cat <filename>';
-    if (!filesystem[filenames[0]]) return  `${filenames[0]}: No such file`;
+    if (filesystem[filenames[0]] === undefined) return `${filenames[0]}: No such file`;
     if (filesystem[filenames[0]] === '') return ""; 
-    return filesystem[filename];
+    return filesystem[filenames[0]];
 }

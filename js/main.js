@@ -1,33 +1,33 @@
-const cli = document.getElementById('cli');
 const output = document.getElementById('output');
 const prompt = document.getElementById('prompt');
 
 // Focus on CLI unless user clicks on a link
 document.addEventListener(`click`, (event) => {
     if (event.target.tagName !== 'A') {
-        cli.focus();
+      var cli = document.getElementById('cli');
+      if (cli) {
+         cli.focus();
+      }
     }  
 });
 
 // Clear CLI on page refresh
-document.addEventListener('DOMContentLoaded', (event) => {
-    const isRefreshed = performance.getEntriesByType('navigation')[0].type === 'reload';
-    if (isRefreshed) {
-        cli.value = ' ';
-    }
-    
+document.addEventListener('DOMContentLoaded', (event) => { 
     displayBaseContent();
 });
 
 // Detect user input and update the output area
-cli.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
-        const command = cli.value.trim();
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' && event.target.classList.contains('cli')) {
+        const command = event.target.value.trim();
         if (command) {
-            cli.value = '';
-            appendOutput(prompt.textContent + " ", "green", false);
-            appendOutput(command, "white");
-            appendOutput(parseCommand(command));
+            event.target.disabled = true;
+
+            var result = parseCommand(command);
+            if (result) {
+                appendOutput(result);
+            }
+            appendPrompt();
         }
     }
 });
@@ -41,25 +41,50 @@ function displayBaseContent() {
     appendLink("About", ABOUT_URL);
     appendOutput("\n");
     appendOutput(WELCOME_MESSAGE);
+    appendPrompt();
 }
 
 
 // Appen link to output area
 function appendLink(text, url, newLine = true) {
-    output.innerHTML += `<a href = "${url}" target="_blank"> ${text} </a>`;
+    var link = document.createElement('a');
+    link.href = url;
+    link.textContent = text + " ";
     if (newLine) {
-        output.innerHTML += '\n';
-    } 
+        link.textContent += "\n";
+    }
+    output.appendChild(link);
     output.scrollTop = output.scrollHeight;
 }
 
 // Append output area
 function appendOutput(text, color = "white", newLine = true) {
-    output.innerHTML += `<span style="color: ${color}">${text}</span>`;
+    let span = document.createElement('span');
+    span.style.color = color;
+    span.textContent = text;
     if (newLine) {
-        output.innerHTML += `\n`;
+        span.textContent += "\n";
     }
+    output.appendChild(span);
     output.scrollTop = output.scrollHeight;
+}
+
+function appendPrompt() {
+  var prompt = document.createElement('span');
+  prompt.classList.add('prompt');
+  prompt.textContent = PROMPT_TEXT;
+
+  var cli = document.createElement('input');  
+  cli.classList.add('cli');
+  cli.id = 'cli';
+  
+  var input = document.createElement('div');
+  input.classList.add('input');
+  input.appendChild(prompt);
+  input.appendChild(cli);
+  output.appendChild(input); 
+  cli.focus();
+  output.scrollTop = output.scrollHeight;
 }
 
 // Displays the ascii art banner

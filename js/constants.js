@@ -11,6 +11,7 @@ const WIKI_URL = "https://wiki.todoprogramming.org";
 const BLOG_URL = "https://blog.todoprogramming.org";
 const GITHUB_URL = "https://github.com/robaldwin9";
 const ABOUT_URL = "https://wiki.todoprogramming.org/en/about";
+const PROMPT_TEXT = "robaldwin@todoprogramming:~$ ";
 
 const WELCOME_MESSAGE = `Welcome to todoprogramming.org! Type 'help' for a list of commands.
 Common links are available above for ease of use.

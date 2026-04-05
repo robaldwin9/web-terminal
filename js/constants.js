@@ -15,7 +15,8 @@ const PROMPT_TEXT = "robaldwin@todoprogramming:~$ ";
 const CLOCK_URL = "https://clock.todoprogramming.org";
 const CITY_URL = "https://city.todoprogramming.org";
 const CELL_GAME_URL = "https://cell.todoprogramming.org";
-const WELCOME_MESSAGE = `Welcome to todoprogramming.org! Type 'help' for a list of commands.
-Common links are available above for ease of use.
-Our mission is to provide high-quality programming tutorials, and resources.
-todoprogramming.org is the hobby project of the author Ronald Baldwin.`;
+const WELCOME_MESSAGE = `Welcome to todoprogramming.org! 
+Type 'help' for a list of commands.
+Common links are available above.
+Our Main goal is to provide technical content.
+author: Ronald Baldwin`;

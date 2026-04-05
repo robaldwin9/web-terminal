@@ -1,5 +1,5 @@
 const output = document.getElementById('output');
-const BANNER = window.innerWidth < 600 ? BANNER_MOBILE : BANNER_DESKTOP;
+const BANNER = window.innerWidth < 1024 ? BANNER_MOBILE : BANNER_DESKTOP;
 
 // Focus on CLI unless user clicks on a link
 document.addEventListener(`click`, (event) => {

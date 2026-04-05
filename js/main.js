@@ -1,5 +1,5 @@
 const output = document.getElementById('output');
-const prompt = document.getElementById('prompt');
+//const prompt = document.getElementById('prompt');
 
 // Focus on CLI unless user clicks on a link
 document.addEventListener(`click`, (event) => {
@@ -23,11 +23,9 @@ document.addEventListener('keydown', (event) => {
         if (command) {
             event.target.disabled = true;
 
-            var result = parseCommand(command);
-            if (result) {
-                appendOutput(result);
-            }
-            appendPrompt();
+            const { text, prompt = true } = parseCommand(command);
+            if (text) appendOutput(text);
+            if (prompt) appendPrompt();
         }
     }
 });

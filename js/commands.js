@@ -5,35 +5,38 @@ function parseCommand(command) {
     splitCommand = command.split(' ');
     switch (splitCommand[0]) {
         case 'help':
-            return help();
+            return { text: help() };
         case 'blog':
             appendIframe(BLOG_URL);
-            console.log('blog');
-            return '';
+            return {};
         case 'wiki':
             appendIframe(WIKI_URL);
-            return '';
-        case `about`:
-           appendIframe(ABOUT_URL);
-           return '';
-        case `touch`:
-           return createFile(splitCommand[1]);
+            return {};
+        case 'about':
+            appendIframe(ABOUT_URL);
+            return {};
+        case 'touch':
+            return { text: createFile(splitCommand[1]) };
         case 'ls':
-            return listFiles();
+            return { text: listFiles() };
         case 'clear':
-            return clear();
+            clear();
+            return { prompt: false };
         case 'cat':
-            return concatFiles(splitCommand.slice(1));
-        case `nano`:
-            return 'nano is not implemented yet';
+            return { text: concatFiles(splitCommand.slice(1)) };
+        case 'nano':
+            return { text: 'nano is not implemented yet' };
         case 'clock':
-            return appendIframe(CLOCK_URL);
+            appendIframe(CLOCK_URL);
+            return {};
         case 'city':
-            return appendIframe(CITY_URL);
+            appendIframe(CITY_URL);
+            return {};
         case 'cell':
-            return appendIframe(CELL_GAME_URL);
+            appendIframe(CELL_GAME_URL);
+            return {};
         default:
-           return notFound(command); 
+            return { text: notFound(command) };
     }
 }
 
@@ -56,13 +59,12 @@ function help() {
 }
 
 function notFound(command) {
-    return `bash: ${command}: commmand not found`;
+    return { text: `bash: ${command}: command not found` };
 }
 
 function clear() {
-   output.innerHTML = '';
+   while (output.firstChild) output.removeChild(output.firstChild);
    displayBaseContent();
-   return '';
 }
 
 function createFile(filename) {

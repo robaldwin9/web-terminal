@@ -35,7 +35,7 @@ function displayBaseContent() {
     appendBanner(BANNER);
     appendLink("[Wiki]", WIKI_URL, false);
     appendLink("[Blog]", BLOG_URL, false);
-    appendLink("[GitHub]", GITHUB_URL, false);
+    appendLink("[Git]", GITHUB_URL, false);
     appendLink("[About]", ABOUT_URL);
     appendOutput("\n");
     appendOutput(WELCOME_MESSAGE);

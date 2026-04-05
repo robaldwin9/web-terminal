@@ -35,6 +35,9 @@ function parseCommand(command) {
         case 'cell':
             appendIframe(CELL_GAME_URL);
             return {};
+        case 'recursive':
+            appendIframe("https://todoprogramming.org");
+            return {};
         default:
             return { text: notFound(command) };
     }

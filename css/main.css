@@ -28,7 +28,7 @@ body::after {
 #output pre {
     font-family: inherit;
     font-size: inherit;
-    margin: 0;
+    margin-bottom: 0 0 12px 0;
 }
 
 .input {
@@ -65,6 +65,9 @@ body::after {
 #output a {
     color: cyan;
     text-decoration: none;
+    display: inline-block;
+    margin-right: 20px;
+
 }
 
 #output a:hover {

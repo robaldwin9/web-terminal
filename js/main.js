@@ -37,8 +37,9 @@ function displayBaseContent() {
     appendLink("Blog", BLOG_URL, false);
     appendLink("GitHub", GITHUB_URL, false);
     appendLink("About", ABOUT_URL);
-    appendOutput("\n");
+    appendOutput("\n")
     appendOutput(WELCOME_MESSAGE);
+    appendOutput("\n");
     appendPrompt();
 }
 
@@ -89,7 +90,6 @@ function appendPrompt() {
 function appendBanner(text, color = "green") {
     const pre = document.createElement('pre');
     pre.style.color = color;
-    pre.style.margin = '0';
     pre.textContent = text;
     output.appendChild(pre);
     output.scrollTop = output.scrollHeight;

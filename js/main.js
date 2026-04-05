@@ -12,7 +12,7 @@ document.addEventListener(`click`, (event) => {
 });
 
 // Clear CLI on page refresh
-document.addEventListener('DOMContentLoaded', (event) => { 
+document.fonts.ready.then(() => {
     displayBaseContent();
 });
 

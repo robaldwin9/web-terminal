@@ -26,6 +26,12 @@ function parseCommand(command) {
             return concatFiles(splitCommand.slice(1));
         case `nano`:
             return 'nano is not implemented yet';
+        case 'clock':
+            return appendIframe(CLOCK_URL);
+        case 'city':
+            return appendIframe(CITY_URL);
+        case 'cell':
+            return appendIframe(CELL_GAME_URL);
         default:
            return notFound(command); 
     }
@@ -37,12 +43,15 @@ function help() {
     helpText += "help - Shows this help message\n";
     helpText += "clear - Clears the terminal\n";
     helpText += "blog - visit our blog in the terminal\n";
-    helpText += "wiki - visite our wiki in the terminal\n";
-    helpText += "about - vist autor about page in the terminal\n";
+    helpText += "wiki - visit our wiki in the terminal\n";
+    helpText += "about - visit autor about page in the terminal\n";
     helpText += "touch <filename> - creates a new file\n";
     helpText += "ls - list of all files\n";
     helpText += "cat <filename> - display contents of a file\n";
     helpText += "nano <filename> - edit a file (not implemented yet)\n";
+    helpText += "clock - lanches old clock.js\n";
+    helpText += "city - launches a 3D city generater application\n";
+    helpText += "cell - launches a 2D cell game\n";
     return helpText;
 }
 

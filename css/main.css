@@ -8,6 +8,23 @@ body {
     letter-spacing: 0;
 }
 
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        repeating-linear-gradient(
+            0deg,
+            transparent 0px,
+            transparent 2px,
+            rgba(255, 255, 255, 0.05) 2px,
+            rgba(255, 255, 255, 0.05) 3px
+        ),
+        radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.75) 100%);
+    pointer-events: none;
+    z-index: 999;
+}
+
 #output pre {
     font-family: inherit;
     font-size: inherit;

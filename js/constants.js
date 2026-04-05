@@ -16,7 +16,8 @@ const CLOCK_URL = "https://clock.todoprogramming.org";
 const CITY_URL = "https://city.todoprogramming.org";
 const CELL_GAME_URL = "https://cell.todoprogramming.org";
 const WELCOME_MESSAGE = `Welcome to todoprogramming.org! 
-Type 'help' for a list of commands.
-Common links are available above.
 Our Main goal is to provide technical content.
+
+Type 'help' for a list of commands.
+Common content links are at the top.
 author: Ronald Baldwin`;

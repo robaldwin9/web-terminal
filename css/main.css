@@ -36,7 +36,7 @@ body::after {
 }
 
 #output pre {
-    font-family: inherit;
+    font-family: "Noto Sans Mono", monospace;
     font-size: inherit;
     margin-bottom: 0 0 12px 0;
 }

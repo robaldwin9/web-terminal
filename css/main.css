@@ -73,3 +73,14 @@ body::after {
 #output a:hover {
     text-decoration: underline;
 }
+
+
+@media (max-width: 600px) {
+     body {
+         font-size: 14px;
+     }
+ 
+     .cli {
+         font-size: 16px; /* prevents iOS auto-zoom on input focus */
+     }
+ }

@@ -1,11 +1,20 @@
-const BANNER = `
-  _            _                                                           _             
- | |_ ___   __| | ___  _ __  _ __ ___   __ _ _ __ __ _ _ __ ___  _ __ ___ (_)_ __   __ _ 
- | __/ _ \\ / _\` |/ _ \\| '_ \\| '__/ _ \\ / _\` | '__/ _\` | '_ \` _ \\| '_ \` _ \\| | '_ \\ / _\` |
- | || (_) | (_| | (_) | |_) | | | (_) | (_| | | | (_| | | | | | | | | | | | | | | | (_| |
-  \\__\\___/ \\__,_|\\___/| .__/|_|  \\___/ \\__, |_|  \\__,_|_| |_| |_|_| |_| |_|_|_| |_|\\__, |
-                      |_|              |___/                                       |___/
-`;
+const BANNER_DESKTOP = `
+████████╗ ██████╗ ██████╗  ██████╗ ██████╗ ██████╗  ██████╗  ██████╗ ██████╗  █████╗ ███╗   ███╗███╗   ███╗██╗███╗   ██╗ ██████╗ 
+╚══██╔══╝██╔═══██╗██╔══██╗██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗██╔════╝ ██╔══██╗██╔══██╗████╗ ████║████╗ ████║██║████╗  ██║██╔════╝ 
+   ██║   ██║   ██║██║  ██║██║   ██║██████╔╝██████╔╝██║   ██║██║  ███╗██████╔╝███████║██╔████╔██║██╔████╔██║██║██╔██╗ ██║██║  ███╗
+   ██║   ██║   ██║██║  ██║██║   ██║██╔═══╝ ██╔══██╗██║   ██║██║   ██║██╔══██╗██╔══██║██║╚██╔╝██║██║╚██╔╝██║██║██║╚██╗██║██║   ██║
+   ██║   ╚██████╔╝██████╔╝╚██████╔╝██║     ██║  ██║╚██████╔╝╚██████╔╝██║  ██║██║  ██║██║ ╚═╝ ██║██║ ╚═╝ ██║██║██║ ╚████║╚██████╔╝
+   ╚═╝    ╚═════╝ ╚═════╝  ╚═════╝ ╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
+`;                                                                                                                                 
+
+const BANNER_MOBILE = `
+ ████████╗ ██████╗ ██████╗  ██████╗ 
+ ╚══██╔══╝██╔═══██╗██╔══██╗██╔═══██╗
+    ██║   ██║   ██║██║  ██║██║   ██║
+    ██║   ██║   ██║██║  ██║██║   ██║
+    ██║   ╚██████╔╝██████╔╝╚██████╔╝
+    ╚═╝    ╚═════╝ ╚═════╝  ╚═════╝ 
+ `;                                  
 
 const WIKI_URL = "https://wiki.todoprogramming.org";
 const BLOG_URL = "https://blog.todoprogramming.org";
@@ -16,8 +25,8 @@ const CLOCK_URL = "https://clock.todoprogramming.org";
 const CITY_URL = "https://city.todoprogramming.org";
 const CELL_GAME_URL = "https://cell.todoprogramming.org";
 const WELCOME_MESSAGE = `Welcome to todoprogramming.org! 
-Our Main goal is to provide technical content.
+My main goal is to provide technical content related to programming,
+software development, and technology in general.
 
-Type 'help' for a list of commands.
-Common content links are at the top.
-author: Ronald Baldwin`;
+A terminal, blog, and wiki built by Ronald Baldwin.
+'help' for a list of commands.`;

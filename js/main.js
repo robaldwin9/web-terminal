@@ -1,5 +1,5 @@
 const output = document.getElementById('output');
-//const prompt = document.getElementById('prompt');
+const BANNER = window.innerWidth < 600 ? BANNER_MOBILE : BANNER_DESKTOP;
 
 // Focus on CLI unless user clicks on a link
 document.addEventListener(`click`, (event) => {
@@ -33,16 +33,14 @@ document.addEventListener('keydown', (event) => {
 // Displays content that is always at the top of the page
 function displayBaseContent() {
     appendBanner(BANNER);
-    appendLink("Wiki", WIKI_URL, false);
-    appendLink("Blog", BLOG_URL, false);
-    appendLink("GitHub", GITHUB_URL, false);
-    appendLink("About", ABOUT_URL);
-    appendOutput("\n")
-    appendOutput(WELCOME_MESSAGE);
+    appendLink("[Wiki]", WIKI_URL, false);
+    appendLink("[Blog]", BLOG_URL, false);
+    appendLink("[GitHub]", GITHUB_URL, false);
+    appendLink("[About]", ABOUT_URL);
     appendOutput("\n");
+    appendOutput(WELCOME_MESSAGE);
     appendPrompt();
 }
-
 
 // Appen link to output area
 function appendLink(text, url, newLine = true) {
@@ -57,7 +55,7 @@ function appendLink(text, url, newLine = true) {
 }
 
 // Append output area
-function appendOutput(text, color = "white", newLine = true) {
+function appendOutput(text, color = "#e0e0e0", newLine = true) {
     let span = document.createElement('span');
     span.style.color = color;
     span.textContent = text;

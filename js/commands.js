@@ -39,7 +39,7 @@ function parseCommand(command) {
             appendIframe("https://todoprogramming.org");
             return {};
         default:
-            return { text: notFound(command) };
+            return notFound(command);
     }
 }
 

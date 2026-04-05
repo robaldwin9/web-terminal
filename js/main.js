@@ -87,7 +87,7 @@ function appendPrompt() {
 }
 
 // Displays the ascii art banner
-function appendBanner(text, color = "green") {
+function appendBanner(text, color = "#39ff14") {
     const pre = document.createElement('pre');
     pre.style.color = color;
     pre.textContent = text;

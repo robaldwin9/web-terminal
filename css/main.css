@@ -48,14 +48,14 @@ body::after {
  
 .prompt {
     background-color: black;
-    color: green;
+    color: #33ff33;
     white-space: pre;
 }
 
 #output {
     height: 80vh;
     background-color: black;
-    color: green;
+    color: #33ff33;
     flex: 1;
     white-space: pre;
     height: 0;

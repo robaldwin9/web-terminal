@@ -45,19 +45,21 @@ function parseCommand(command) {
 
 // Command functions
 function help() {
-    var helpText = "Available commands:\n"; 
-    helpText += "help - Shows this help message\n";
-    helpText += "clear - Clears the terminal\n";
-    helpText += "blog - visit our blog in the terminal\n";
-    helpText += "wiki - visit our wiki in the terminal\n";
-    helpText += "about - visit autor about page in the terminal\n";
-    helpText += "touch <filename> - creates a new file\n";
-    helpText += "ls - list of all files\n";
-    helpText += "cat <filename> - display contents of a file\n";
-    helpText += "nano <filename> - edit a file (not implemented yet)\n";
-    helpText += "clock - lanches old clock.js\n";
-    helpText += "city - launches a 3D city generater application\n";
-    helpText += "cell - launches a 2D cell game\n";
+    var helpText = "";
+    helpText += "|Commands]        |[Description]                             |\n"
+    helpText += "|-----------------|------------------------------------------|\n";
+    helpText += "|help             |Shows this help message                   |\n";
+    helpText += "|clear            |Clears the terminal                       |\n";
+    helpText += "|blog             |visit our blog in the terminal            |\n";
+    helpText += "|wiki             |visit our wiki in the terminal            | \n";
+    helpText += "|about            |visit autor about page in the terminal    |\n";
+    helpText += "|touch <filename> |creates a new file                        |\n";
+    helpText += "|ls               |list of all files                         |\n";
+    helpText += "|cat   <filename> |display contents of a file                |\n";
+    helpText += "|nano  <filename> |edit a file (not implemented yet)         |\n";
+    helpText += "|clock            |lanches old clock.js                      |\n";
+    helpText += "|city             |launches a 3D city generater application  |\n";
+    helpText += "|cell             |launches a 2D cell game                   |\n";
     return helpText;
 }
 

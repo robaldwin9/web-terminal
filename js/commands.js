@@ -51,7 +51,7 @@ function help() {
     helpText += "|help             |Shows this help message                   |\n";
     helpText += "|clear            |Clears the terminal                       |\n";
     helpText += "|blog             |visit our blog in the terminal            |\n";
-    helpText += "|wiki             |visit our wiki in the terminal            | \n";
+    helpText += "|wiki             |visit our wiki in the terminal            |\n";
     helpText += "|about            |visit autor about page in the terminal    |\n";
     helpText += "|touch <filename> |creates a new file                        |\n";
     helpText += "|ls               |list of all files                         |\n";

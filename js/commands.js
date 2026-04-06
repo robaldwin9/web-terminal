@@ -56,7 +56,7 @@ function help() {
 }
 
 function notFound(command) {
-    return response([segment(`bash: ${command}: command not found`)]);
+    return response([segment(`bash: ${command}: command not found`, COLOR.error)]);
 }
 
 function clear() {

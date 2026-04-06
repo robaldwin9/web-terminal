@@ -10,7 +10,6 @@ body {
     height : 100dvh;
     margin: 0;
     font-family: "Courier Prime", monospace;
-    font-size: 16px;
     letter-spacing: 0;
 }
 
@@ -38,7 +37,7 @@ body::after {
 #output pre {
     font-family: "Noto Sans Mono", monospace;
     font-size: inherit;
-    margin-bottom: 0 0 12px 0;
+    margin: 0 0 12px 0;
 }
 
 .input {
@@ -48,22 +47,18 @@ body::after {
 }
 
 .cli {
-    font-size: max(16px, 1em); /* inherits body clamp but never below 16px */
+    font-size: clamp(13px, 1.5vw, 18px);
     background-color: var(--bgcolor);
-    color: white;
+    color: #e0e0e0;
     height: 5vh;
     flex: 1;
     border: none;
     outline : none; 
     caret-color: var(--primary);
-    animation: blink 1s step-end infinite;
-
-    @keyframes blink {
-        50% { opacity: 0; }
-    }
 }
  
 .prompt {
+    font-size: clamp(13px, 1.5vw, 18px);
     background-color: var(--bgcolor);
     color: var(--promptcolor);
     white-space: pre;

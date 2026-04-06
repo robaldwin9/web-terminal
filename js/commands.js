@@ -29,7 +29,11 @@ function parseCommand(command) {
         case 'cell':
             return appendIframe(CELL_GAME_URL);
         case 'recursive':
-            return appendIframe("https://todoprogramming.org"); 
+            return appendIframe("https://todoprogramming.org");
+        case 'date':
+            return date();
+        case 'history':
+            return history();
         default:
             return notFound(command);
     }
@@ -52,6 +56,8 @@ function help() {
     helpText += "|clock            |lanches old clock.js                      |\n";
     helpText += "|city             |launches a 3D city generater application  |\n";
     helpText += "|cell             |launches a 2D cell game                   |\n";
+    helpText += "|date             |Display the current date                  |\n";
+    helpText += "|history          |Display previouse commands                |\n";
     return response([segment(helpText)]);
 }
 
@@ -63,6 +69,27 @@ function clear() {
    while (output.firstChild) output.removeChild(output.firstChild);
    displayBaseContent();
    return null;
+}
+
+function date() {
+    const date = new Date();
+    return response([segment(date.toString())]);
+
+}
+
+function history() {
+    let output = '';
+
+    for (let i = 1; i < 1000; i++) {
+        command = commandHistory[i-1];
+        if (command) {
+            output += i + ". " + command + "\n";
+        } else {
+            break;
+        }
+   }
+
+    return response([segment(output)]); 
 }
 
 function createFile(filename) {

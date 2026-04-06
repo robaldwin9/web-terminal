@@ -2,6 +2,7 @@ const output = document.getElementById('output');
 const isAndroid = /android/i.test(navigator.userAgent);
 const isMobile = window.innerWidth < 1041;
 const BANNER = isAndroid ? BANNER_ANDROID : isMobile ? BANNER_MOBILE : BANNER_DESKTOP;
+var commandHistory = [];
 
 // Focus on CLI unless user clicks on a link
 document.addEventListener(`click`, (event) => {
@@ -24,7 +25,7 @@ document.addEventListener('keydown', (event) => {
         const command = event.target.value.trim();
         if (command) {
             event.target.disabled = true;
-
+            commandHistory.push(command);
             const {segments, prompt = true } = parseCommand(command);
             if (segments) appendSegments(segments);
             if (prompt) appendPrompt();

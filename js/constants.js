@@ -25,7 +25,6 @@ const BANNER_ANDROID = `
     ╚═╝    ╚═════╝ ╚═════╝  ╚═════╝ 
 `;
 
-
  const COLOR = {
      normal:  '#e0e0e0',
      success: '#39ff14',
@@ -48,3 +47,4 @@ software development, and technology in general.
 
 A terminal, blog, and wiki built by Ronald Baldwin.
 'help' for a list of commands.`;
+

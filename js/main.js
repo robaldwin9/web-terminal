@@ -3,14 +3,13 @@ const isAndroid = /android/i.test(navigator.userAgent);
 const isMobile = window.innerWidth < 1041;
 const BANNER = isAndroid ? BANNER_ANDROID : isMobile ? BANNER_MOBILE : BANNER_DESKTOP;
 var commandHistory = [];
+var historyIndex = -1;
+var activeInput = null;
 
 // Focus on CLI unless user clicks on a link
 document.addEventListener(`click`, (event) => {
-    if (event.target.tagName !== 'A') {
-      var cli = document.getElementById('cli');
-      if (cli) {
-         cli.focus();
-      }
+    if (event.target.tagName !== 'A' && activeInput) {
+        activeInput.focus();
     }  
 });
 
@@ -24,13 +23,50 @@ document.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' && event.target.classList.contains('cli')) {
         const command = event.target.value.trim();
         if (command) {
-            event.target.disabled = true;
+            activeInput.disabled = true;
+            historyIndex = -1;
             commandHistory.push(command);
-            const {segments, prompt = true } = parseCommand(command);
-            if (segments) appendSegments(segments);
-            if (prompt) appendPrompt();
+
+            let response = parseCommand(command);
+            if (response) {
+                const {segments, prompt = true} = response;
+                if (segments) {
+                    appendSegments(segments);
+                }
+
+                if (prompt) {
+                    appendPrompt();
+                }
+            }
+        } else {
+            appendPrompt();
         }
-    }
+    } else if (event.key === 'ArrowUp') {
+         event.preventDefault();
+         if (historyIndex < commandHistory.length - 1) {
+             historyIndex++;
+             activeInput.value = commandHistory[commandHistory.length - 1 - historyIndex];
+         }
+     } else if (event.key === 'ArrowDown') {
+         event.preventDefault();
+         if (historyIndex > -1) { 
+             historyIndex--;
+             activeInput.value = historyIndex === -1 ? '' : 
+             commandHistory[commandHistory.length - 1 - historyIndex];
+         }
+     } else if (event.key === 'Tab') {
+        event.preventDefault();
+        const partial = activeInput.value;
+        if (!partial) {
+            return;
+        }
+         
+        const match = Object.keys(commands).find(name => name.startsWith(partial));
+        if (match) { 
+            activeInput.value = match;
+
+        }
+     }
 });
 
 function appendSegments(segments) {
@@ -84,16 +120,16 @@ function appendPrompt() {
   prompt.classList.add('prompt');
   prompt.textContent = PROMPT_TEXT;
 
-  var cli = document.createElement('input');  
-  cli.classList.add('cli');
-  cli.id = 'cli';
+  activeInput = document.createElement('input');  
+  activeInput.classList.add('cli');
+  activeInput.id = 'cli';
   
   var input = document.createElement('div');
   input.classList.add('input');
   input.appendChild(prompt);
-  input.appendChild(cli);
+  input.appendChild(activeInput);
   output.appendChild(input); 
-  cli.focus();
+  activeInput.focus();
   output.scrollTop = output.scrollHeight;
 }
 

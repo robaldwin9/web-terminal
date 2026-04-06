@@ -1,5 +1,29 @@
 const filesystem = JSON.parse(localStorage.getItem('filesystem') || '{}');
 
+const commands = {
+     help:      { fn: ()     => help(),                                desc: 'Shows this help message'                  },
+     clear:     { fn: ()     => clear(),                               desc: 'Clears the terminal'                      },
+     date:      { fn: ()     => date(),                                desc: 'Displays the current date and time'       },
+     history:   { fn: ()     => historyCommand(),                      desc: 'Shows command history'                    },
+     ls:        { fn: ()     => listFiles(),                           desc: 'Lists all files'                          },
+     blog:      { fn: ()     => appendIframe(BLOG_URL),                desc: 'Visit the blog in the terminal'           },
+     wiki:      { fn: ()     => appendIframe(WIKI_URL),                desc: 'Visit the wiki in the terminal'           },
+     about:     { fn: ()     => appendIframe(ABOUT_URL),               desc: 'Visit the about page in the terminal'     },
+     clock:     { fn: ()     => appendIframe(CLOCK_URL),               desc: 'Launches old clock.js'                    },
+     city:      { fn: ()     => appendIframe(CITY_URL),                desc: 'Launches a 3D city generator'             },
+     cell:      { fn: ()     => appendIframe(CELL_GAME_URL),           desc: 'Launches a 2D cell game'                  },
+     recursive: { fn: ()     => appendIframe("https://todoprogramming.org"), desc: 'Loads this site inside itself'      },
+     touch:     { fn: (args) => createFile(args[0]),                   desc: 'Creates a new file'                       },
+     cat:       { fn: (args) => concatFiles(args),                     desc: 'Displays contents of a file'              },
+     nano:      { fn: ()     => response([segment('nano is not implemented yet')]), desc: 'Edit a file (coming soon)'   },
+ };
+
+ function parseCommand(command) {
+     const [name, ...args] = command.split(' ');
+     const fn = commands[name];
+     return fn ? fn(args) : notFound(name);
+ }
+
 // Command parser
 function parseCommand(command) {
     splitCommand = command.split(' ');
@@ -68,16 +92,16 @@ function notFound(command) {
 function clear() {
    while (output.firstChild) output.removeChild(output.firstChild);
    displayBaseContent();
+   historyIndex = -1
    return null;
 }
 
 function date() {
     const date = new Date();
     return response([segment(date.toString())]);
-
 }
 
-function history() {
+function historyCommand() {
     let output = '';
 
     for (let i = 1; i < 1000; i++) {
@@ -114,7 +138,6 @@ function concatFiles(filenames) {
     if (filesystem[filenames[0]] === '') return ""; 
     return response([segment(filesystem[filenames[0]])]);
 }
-
 
 function segment(text = '', color = COLOR.normal) {
     return { text, color }; 

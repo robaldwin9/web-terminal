@@ -25,12 +25,22 @@ document.addEventListener('keydown', (event) => {
         if (command) {
             event.target.disabled = true;
 
-            const { text, prompt = true } = parseCommand(command);
-            if (text) appendOutput(text);
+            const {segments, prompt = true } = parseCommand(command);
+            if (segments) appendSegments(segments);
             if (prompt) appendPrompt();
         }
     }
 });
+
+function appendSegments(segments) {
+    segments.forEach(({text, color}) => {
+        const span = document.createElement('span');
+        span.style.color = color;
+        span.textContent = text;
+        output.appendChild(span);
+    });
+    output.scrollTop = output.scrollHeight;
+}
 
 // Displays content that is always at the top of the page
 function displayBaseContent() {
@@ -104,5 +114,8 @@ function appendIframe(url) {
     iframe.style.maxHeight = `60vh`;
     output.appendChild(iframe);
     output.scrollTop = output.scrollHeight;
+    return response([]);
 }
+
+
 

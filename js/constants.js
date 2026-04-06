@@ -25,6 +25,15 @@ const BANNER_ANDROID = `
     ╚═╝    ╚═════╝ ╚═════╝  ╚═════╝ 
 `;
 
+
+ const COLOR = {
+     normal:  '#e0e0e0',
+     success: '#39ff14',
+     error:   '#ff4444',
+     dim:     '#aaaaaa',
+     warning: '#ffb000',
+ };
+
 const WIKI_URL = "https://wiki.todoprogramming.org";
 const BLOG_URL = "https://blog.todoprogramming.org";
 const GITHUB_URL = "https://github.com/robaldwin9";

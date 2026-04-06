@@ -5,39 +5,31 @@ function parseCommand(command) {
     splitCommand = command.split(' ');
     switch (splitCommand[0]) {
         case 'help':
-            return { text: help() };
+            return help();
         case 'blog':
-            appendIframe(BLOG_URL);
-            return {};
+            return appendIframe(BLOG_URL);
         case 'wiki':
-            appendIframe(WIKI_URL);
-            return {};
+            return appendIframe(WIKI_URL);
         case 'about':
-            appendIframe(ABOUT_URL);
-            return {};
+            return appendIframe(ABOUT_URL);
         case 'touch':
-            return { text: createFile(splitCommand[1]) };
+            return createFile(splitCommand[1]);
         case 'ls':
-            return { text: listFiles() };
+            return listFiles();
         case 'clear':
-            clear();
-            return { prompt: false };
+            return clear();
         case 'cat':
-            return { text: concatFiles(splitCommand.slice(1)) };
+            return concatFiles(splitCommand.slice(1))
         case 'nano':
-            return { text: 'nano is not implemented yet' };
+            return [segment('nano is not implemented yet')];
         case 'clock':
-            appendIframe(CLOCK_URL);
-            return {};
+            return appendIframe(CLOCK_URL);
         case 'city':
-            appendIframe(CITY_URL);
-            return {};
+            return appendIframe(CITY_URL);
         case 'cell':
-            appendIframe(CELL_GAME_URL);
-            return {};
+            return appendIframe(CELL_GAME_URL);
         case 'recursive':
-            appendIframe("https://todoprogramming.org");
-            return {};
+            return appendIframe("https://todoprogramming.org"); 
         default:
             return notFound(command);
     }
@@ -60,31 +52,32 @@ function help() {
     helpText += "|clock            |lanches old clock.js                      |\n";
     helpText += "|city             |launches a 3D city generater application  |\n";
     helpText += "|cell             |launches a 2D cell game                   |\n";
-    return helpText;
+    return response([segment(helpText)]);
 }
 
 function notFound(command) {
-    return { text: `bash: ${command}: command not found` };
+    return response([segment(`bash: ${command}: command not found`)]);
 }
 
 function clear() {
    while (output.firstChild) output.removeChild(output.firstChild);
    displayBaseContent();
+   return null;
 }
 
 function createFile(filename) {
     if (!filename) return 'usage: touch <filename>';
     filesystem[filename] = '';
     localStorage.setItem('filesystem', JSON.stringify(filesystem));
-    return `created ${filename}`;
+    return response([segment(`created ${filename}`)]);
 }
 
 function listFiles() {
     const files = Object.keys(filesystem);
     if (files.length === 0) {
-        return "";
+        return response([segment("")]);
     } else {
-        return files.join('\n');
+        return response([segment(files.join('\n'))]);
     }
 }
 
@@ -92,5 +85,14 @@ function concatFiles(filenames) {
     if (filenames.length === 0) return 'usage: cat <filename>';
     if (filesystem[filenames[0]] === undefined) return `${filenames[0]}: No such file`;
     if (filesystem[filenames[0]] === '') return ""; 
-    return filesystem[filenames[0]];
+    return response([segment(filesystem[filenames[0]])]);
+}
+
+
+function segment(text = '', color = COLOR.normal) {
+    return { text, color }; 
+}
+
+function response(segments, prompt = true) {
+    return {segments, prompt};
 }

@@ -14,54 +14,15 @@ const commands = {
      cell:      { fn: ()     => appendIframe(CELL_GAME_URL),           desc: 'Launches a 2D cell game'                  },
      recursive: { fn: ()     => appendIframe("https://todoprogramming.org"), desc: 'Loads this site inside itself'      },
      touch:     { fn: (args) => createFile(args[0]),                   desc: 'Creates a new file'                       },
-     cat:       { fn: (args) => concatFiles(args),                     desc: 'Displays contents of a file'              },
-     nano:      { fn: ()     => response([segment('nano is not implemented yet')]), desc: 'Edit a file (coming soon)'   },
+     cat:       { fn: (args) => concatFiles(args[0]),                     desc: 'Displays contents of a file'              },
+     nano:      { fn: (args) => nano(args), desc: 'Edit a file (coming soon)'   },
  };
 
  function parseCommand(command) {
      const [name, ...args] = command.split(' ');
-     const fn = commands[name];
-     return fn ? fn(args) : notFound(name);
+     const cmd = commands[name];
+     return cmd ? cmd.fn(args) : notFound(name);
  }
-
-// Command parser
-function parseCommand(command) {
-    splitCommand = command.split(' ');
-    switch (splitCommand[0]) {
-        case 'help':
-            return help();
-        case 'blog':
-            return appendIframe(BLOG_URL);
-        case 'wiki':
-            return appendIframe(WIKI_URL);
-        case 'about':
-            return appendIframe(ABOUT_URL);
-        case 'touch':
-            return createFile(splitCommand[1]);
-        case 'ls':
-            return listFiles();
-        case 'clear':
-            return clear();
-        case 'cat':
-            return concatFiles(splitCommand.slice(1))
-        case 'nano':
-            return [segment('nano is not implemented yet')];
-        case 'clock':
-            return appendIframe(CLOCK_URL);
-        case 'city':
-            return appendIframe(CITY_URL);
-        case 'cell':
-            return appendIframe(CELL_GAME_URL);
-        case 'recursive':
-            return appendIframe("https://todoprogramming.org");
-        case 'date':
-            return date();
-        case 'history':
-            return history();
-        default:
-            return notFound(command);
-    }
-}
 
 // Command functions
 function help() {

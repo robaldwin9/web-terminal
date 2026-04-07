@@ -5,6 +5,9 @@ const BANNER = isAndroid ? BANNER_ANDROID : isMobile ? BANNER_MOBILE : BANNER_DE
 var commandHistory = [];
 var historyIndex = -1;
 var activeInput = null;
+var tabMatches = [];
+var tabIndex = -1;
+var tabPartial = '';
 
 // Focus on CLI unless user clicks on a link
 document.addEventListener(`click`, (event) => {
@@ -20,6 +23,13 @@ document.fonts.ready.then(() => {
 
 // Detect user input and update the output area
 document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Tab') {
+        tabMatches = [];
+        tabIndex = -1;
+        tabPartial = '';
+    }
+    
+    // Command submitted logic
     if (event.key === 'Enter' && event.target.classList.contains('cli')) {
         const command = event.target.value.trim();
         if (command) {
@@ -38,15 +48,20 @@ document.addEventListener('keydown', (event) => {
                     appendPrompt();
                 }
             }
+        // No command new line is printed
         } else {
             appendPrompt();
         }
+
+    // Arrow up press cycles back in command history
     } else if (event.key === 'ArrowUp') {
          event.preventDefault();
          if (historyIndex < commandHistory.length - 1) {
              historyIndex++;
              activeInput.value = commandHistory[commandHistory.length - 1 - historyIndex];
          }
+
+     // Arrow down press cycles forward in history
      } else if (event.key === 'ArrowDown') {
          event.preventDefault();
          if (historyIndex > -1) { 
@@ -54,21 +69,28 @@ document.addEventListener('keydown', (event) => {
              activeInput.value = historyIndex === -1 ? '' : 
              commandHistory[commandHistory.length - 1 - historyIndex];
          }
+     // Tab cycles between available commands
      } else if (event.key === 'Tab') {
         event.preventDefault();
-        const partial = activeInput.value;
-        if (!partial) {
-            return;
-        }
-         
-        const match = Object.keys(commands).find(name => name.startsWith(partial));
-        if (match) { 
-            activeInput.value = match;
+        const partial = tabMatches.length ? tabPartial : activeInput.value;
+        if (!partial) return;
 
+        const currentMatches = Object.keys(commands).filter(name => name.startsWith(partial));
+        if (currentMatches.length === 0) return;
+
+        if (!tabMatches.length) {
+            tabPartial = partial;
+            tabMatches = currentMatches;
+            tabIndex = -1;
         }
+
+        tabIndex = (tabIndex + 1) % tabMatches.length;
+        activeInput.value = tabMatches[tabIndex];
+        activeInput.focus();
      }
 });
 
+// Segments allows coloring of any output string
 function appendSegments(segments) {
     segments.forEach(({text, color}) => {
         const span = document.createElement('span');

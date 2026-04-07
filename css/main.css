@@ -115,3 +115,37 @@ body::after {
          font-size: 16px;
      }
  }
+
+
+ #nanoOverlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bgcolor);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    font-family: inherit;
+    font-size: inherit;
+ }
+
+
+
+#nanoHeader header {
+    background: white;
+    color: var(--bgcolor);
+    padding: 2px 8px;
+    text-align: center;
+ }
+ 
+ #nanoInput {
+    flex: 1;
+    background: var(--bgcolor);
+    color: #e0e0e0;
+    border: none;
+    outline: none;
+    padding: 8px;
+    font: inherit;
+    resize: none;
+    caret-color: var(--promptcolor);
+ }

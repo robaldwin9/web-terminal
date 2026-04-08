@@ -1,8 +1,8 @@
 const filesystem = JSON.parse(localStorage.getItem('filesystem') || '{}');
 
 const commands = {
-     help:      { fn: ()     => help(),                                desc: 'Shows this help message'                  },
-     clear:     { fn: ()     => clear(),                               desc: 'Clears the terminal'                      },
+     help:      { fn: ()=> help(),                         desc: 'Shows this help message'                  },
+     clear:     { fn: ()     => clear(),                                         desc: 'Clears the terminal'                      },
      date:      { fn: ()     => date(),                                desc: 'Displays the current date and time'       },
      history:   { fn: ()     => historyCommand(),                      desc: 'Shows command history'                    },
      ls:        { fn: ()     => listFiles(),                           desc: 'Lists all files'                          },
@@ -12,10 +12,10 @@ const commands = {
      clock:     { fn: ()     => appendIframe(CLOCK_URL),               desc: 'Launches old clock.js'                    },
      city:      { fn: ()     => appendIframe(CITY_URL),                desc: 'Launches a 3D city generator'             },
      cell:      { fn: ()     => appendIframe(CELL_GAME_URL),           desc: 'Launches a 2D cell game'                  },
-     recursive: { fn: ()     => appendIframe("https://todoprogramming.org"), desc: 'Loads this site inside itself'      },
      touch:     { fn: (args) => createFile(args[0]),                   desc: 'Creates a new file'                       },
-     cat:       { fn: (args) => concatFiles(args[0]),                     desc: 'Displays contents of a file'              },
-     nano:      { fn: (args) => nano(args), desc: 'Edit a file (coming soon)'   },
+     cat:       { fn: (args) => concatFiles(args),                     desc: 'Displays contents of a file'              },
+     nano:      { fn: (args) => nano(args), desc: 'Edit a file'   },
+     rm:        { fn: (args)                            => remove(args[0]), desc: 'Remove files' }
  };
 
  function parseCommand(command) {
@@ -37,12 +37,13 @@ function help() {
     helpText += "|touch <filename> |creates a new file                        |\n";
     helpText += "|ls               |list of all files                         |\n";
     helpText += "|cat   <filename> |display contents of a file                |\n";
-    helpText += "|nano  <filename> |edit a file (not implemented yet)         |\n";
+    helpText += "|nano  <filename> |edit a file                               |\n";
     helpText += "|clock            |lanches old clock.js                      |\n";
     helpText += "|city             |launches a 3D city generater application  |\n";
     helpText += "|cell             |launches a 2D cell game                   |\n";
     helpText += "|date             |Display the current date                  |\n";
     helpText += "|history          |Display previouse commands                |\n";
+    helpText += "|rm <filename>    |Remove a file                             |\n";
     return response([segment(helpText)]);
 }
 
@@ -93,11 +94,25 @@ function listFiles() {
     }
 }
 
-function concatFiles(filenames) {
-    if (filenames.length === 0) return 'usage: cat <filename>';
-    if (filesystem[filenames[0]] === undefined) return `${filenames[0]}: No such file`;
-    if (filesystem[filenames[0]] === '') return ""; 
-    return response([segment(filesystem[filenames[0]])]);
+function concatFiles(args) {
+    if (args.length === 0) return 'usage: cat <filename>';
+    if (filesystem[args[0]] === undefined) return `${args[0]}: No such file`;
+    if (filesystem[args[0]] === '') return "";
+    return response([segment(filesystem[args[0]])]);
+}
+
+function remove(filename) {
+     if (!filename) {
+         return response([segment("usage: rm <filename>", COLOR.error)]);
+     }
+
+     if (filesystem[filename] === undefined) {
+         return response([segment(`rm ${filename}: no such file`, COLOR.error)]);
+     }
+
+     delete filesystem[filename];
+     localStorage.setItem('filesystem', JSON.stringify(filesystem));
+     return response([segment('')]);
 }
 
 function segment(text = '', color = COLOR.normal) {

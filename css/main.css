@@ -1,6 +1,8 @@
 :root {
     --bgcolor: #0a0f0a;
     --promptcolor: #33ff33;
+    --textcolor: #e0e0e0;
+    --linkcolor: #ffb000;
 }
 
 body {
@@ -14,7 +16,7 @@ body {
 }
 
 .intro {
-    color: white;
+    color: var(--textcolor);
 }
 
 body::after {
@@ -49,12 +51,12 @@ body::after {
 .cli {
     font-size: clamp(13px, 1.5vw, 18px);
     background-color: var(--bgcolor);
-    color: #e0e0e0;
+    color: var(--textcolor);
     height: 5vh;
     flex: 1;
     border: none;
     outline : none; 
-    caret-color: var(--primary);
+
 }
  
 .prompt {
@@ -71,9 +73,7 @@ body::after {
     color: var(--promptcolor);
     flex: 1;
     white-space: pre;
-    height: 0;
     overflow-y: auto;
-    text-shadow: 0 0 8px var(--primary);
     scroll-behavior: smooth;
     scrollbar-width: thin;
     scrollbar-color: var(--promptcolor) var(--bgcolor);
@@ -84,7 +84,7 @@ body::after {
 #output::-webkit-scrollbar-thumb { background: var(--promptcolor); }
 
 #output a {
-    color: #ffb000;
+    color: var(--linkcolor);
     text-decoration: none;
     display: inline-block;
     margin-right: 20px;
@@ -93,7 +93,7 @@ body::after {
 }
 
 #output a:hover {
-    text-shadow: 0 0 8px #ffb000;
+    text-shadow: 0 0 8px var(--linkcolor);
     text-decoration: underline;
 }
 
@@ -116,7 +116,6 @@ body::after {
      }
  }
 
-
  #nanoOverlay {
     position: fixed;
     inset: 0;
@@ -130,18 +129,19 @@ body::after {
  }
 
 
-
-#nanoHeader header {
+#nanoHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background: white;
     color: var(--bgcolor);
     padding: 2px 8px;
-    text-align: center;
- }
+}
  
  #nanoInput {
     flex: 1;
     background: var(--bgcolor);
-    color: #e0e0e0;
+     color: var(--textcolor);
     border: none;
     outline: none;
     padding: 8px;
@@ -149,3 +149,37 @@ body::after {
     resize: none;
     caret-color: var(--promptcolor);
  }
+
+#nanoFooter {
+    background: white;
+    color: var(--bgcolor);
+    padding: 2px 8px;
+    text-align: center;
+    font-size: inherit;
+}
+
+#nanoFooter {
+    display: flex;
+    flex-wrap: wrap;
+    background: var(--bgcolor);
+    padding: 2px 0;
+}
+
+.nanoShortcut {
+    display: flex;
+    align-items: center;
+    min-width: 16ch;
+    padding: 1px 4px;
+    gap: 4px;
+}
+
+.nanoKey {
+    background: #e0e0e0;
+    color: var(--bgcolor);
+    padding: 0 2px;
+    font-weight: bold;
+}
+
+.nanoLabel {
+    color: #e0e0e0;
+}

@@ -1,6 +1,5 @@
 var saved = false;
 
-
 const shortcuts = [
     ['^X','Exit'], ['^O','Write Out']
 ]
@@ -62,8 +61,16 @@ function nano(args) {
                 event.preventDefault();
                 overlay.remove();
                 appendPrompt();
+            } else if (event.key === 'ArrowDown') {
+                event.preventDefault();
             }
         });
+
+        overlay.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            editor.focus();
+        })
+
         overlay.appendChild(header);
         overlay.appendChild(editor);
         overlay.appendChild(footer);

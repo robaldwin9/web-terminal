@@ -24,26 +24,21 @@ const commands = {
      return cmd ? cmd.fn(args) : notFound(name);
  }
 
-// Command functions
+
 function help() {
-    var helpText = "";
-    helpText += "|Commands]        |[Description]                             |\n"
-    helpText += "|-----------------|------------------------------------------|\n";
-    helpText += "|help             |Shows this help message                   |\n";
-    helpText += "|clear            |Clears the terminal                       |\n";
-    helpText += "|blog             |visit our blog in the terminal            |\n";
-    helpText += "|wiki             |visit our wiki in the terminal            |\n";
-    helpText += "|about            |visit autor about page in the terminal    |\n";
-    helpText += "|touch <filename> |creates a new file                        |\n";
-    helpText += "|ls               |list of all files                         |\n";
-    helpText += "|cat   <filename> |display contents of a file                |\n";
-    helpText += "|nano  <filename> |edit a file                               |\n";
-    helpText += "|clock            |lanches old clock.js                      |\n";
-    helpText += "|city             |launches a 3D city generater application  |\n";
-    helpText += "|cell             |launches a 2D cell game                   |\n";
-    helpText += "|date             |Display the current date                  |\n";
-    helpText += "|history          |Display previouse commands                |\n";
-    helpText += "|rm <filename>    |Remove a file                             |\n";
+    const cmdCol = 10;
+    const descCol = 37;
+
+    const pad = (str, len) => str.substring(0, len).padEnd(len);
+    const divider = `|${'-'.repeat(cmdCol)}|${'-'.repeat(descCol)}|\n`;
+
+    let helpText = `|${pad('[Commands]', cmdCol)}|${pad('[Description]', descCol)}|\n`;
+    helpText += divider;
+
+    for (const [name, { desc }] of Object.entries(commands)) {
+        helpText += `|${pad(name, cmdCol)}|${pad(desc, descCol)}|\n`;
+    }
+
     return response([segment(helpText)]);
 }
 

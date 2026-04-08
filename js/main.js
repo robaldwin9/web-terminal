@@ -54,7 +54,7 @@ document.addEventListener('keydown', (event) => {
         }
 
     // Arrow up press cycles back in command history
-    } else if (event.key === 'ArrowUp') {
+    } else if (event.key === 'ArrowUp' && event.target.id !== `nanoInput`) {
          event.preventDefault();
          if (historyIndex < commandHistory.length - 1) {
              historyIndex++;
@@ -62,7 +62,7 @@ document.addEventListener('keydown', (event) => {
          }
 
      // Arrow down press cycles forward in history
-     } else if (event.key === 'ArrowDown') {
+     } else if (event.key === 'ArrowDown' && event.target.id !== `nanoInput`) {
          event.preventDefault();
          if (historyIndex > -1) { 
              historyIndex--;

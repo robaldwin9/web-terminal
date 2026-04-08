@@ -116,7 +116,16 @@ body::after {
      }
  }
 
- #nanoOverlay {
+#nanoHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    color: var(--bgcolor);
+    padding: 2px 8px;
+}
+
+#nanoOverlay {
     position: fixed;
     inset: 0;
     background: var(--bgcolor);
@@ -126,29 +135,23 @@ body::after {
     padding: 8px;
     font-family: inherit;
     font-size: inherit;
- }
-
-
-#nanoHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: white;
-    color: var(--bgcolor);
-    padding: 2px 8px;
+    user-select: none;   /* no text selection anywhere on overlay */
+    /* remove pointer-events: none */
 }
- 
- #nanoInput {
+
+#nanoInput {
     flex: 1;
     background: var(--bgcolor);
-     color: var(--textcolor);
+    color: var(--textcolor);
     border: none;
     outline: none;
     padding: 8px;
     font: inherit;
     resize: none;
     caret-color: var(--promptcolor);
- }
+    user-select: text;   /* allow keyboard selection inside editor */
+    /* remove pointer-events: none */
+}
 
 #nanoFooter {
     background: white;

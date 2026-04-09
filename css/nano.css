@@ -93,3 +93,18 @@
     -webkit-appearance: none;
     font: inherit;
 }
+
+@media (max-width: 600px) {
+    #nanoFooter {
+        margin-bottom: 80px; /* pushes footer up above mobile keyboard */
+        gap: 4px;
+    }
+
+    #nanoInput {
+        margin-bottom: 8px; /* gap between textarea and footer */
+    }
+
+    .nanoShortcut {
+        padding: 6px 8px; /* bigger tap targets on mobile */
+    }
+}

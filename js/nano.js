@@ -23,6 +23,14 @@ function nano(args) {
  * @param dom nano dom elements reference
  */
 function bindNanoEvents(dom) {
+    // Resize nano overlay when virtual keyboard opens/closes on mobile
+    const syncHeight = () => {
+        dom.overlay.style.height = window.visualViewport.height + 'px';
+        dom.overlay.style.top = window.visualViewport.offsetTop + 'px';
+    };
+    window.visualViewport.addEventListener('resize', syncHeight);
+    window.visualViewport.addEventListener('scroll', syncHeight);
+
     // Handles all key presses
     dom.overlay.addEventListener('keydown', (event) => {
         // Open save document prompt
@@ -35,6 +43,8 @@ function bindNanoEvents(dom) {
             // Exit Nano
         } else if (event.ctrlKey && event.key === 'x') {
             event.preventDefault();
+            window.visualViewport.removeEventListener('resize', syncHeight);
+            window.visualViewport.removeEventListener('scroll', syncHeight);
             dom.overlay.remove();
             appendPrompt();
 

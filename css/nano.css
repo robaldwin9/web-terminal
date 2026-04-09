@@ -10,7 +10,6 @@
 #nanoOverlay {
     position: fixed;
     inset: 0;
-    height: 100dvh;
     background: var(--bgcolor);
     z-index: 1000;
     display: flex;
@@ -106,6 +105,6 @@
     }
 
     .nanoShortcut {
-        padding: 6px 8px; /* bigger tap targets on mobile */
+        padding: 3px 4px; /* bigger tap targets on mobile */
     }
 }

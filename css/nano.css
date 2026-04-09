@@ -10,6 +10,7 @@
 #nanoOverlay {
     position: fixed;
     inset: 0;
+    height: 100dvh;
     background: var(--bgcolor);
     z-index: 1000;
     display: flex;
@@ -96,8 +97,8 @@
 
 @media (max-width: 600px) {
     #nanoFooter {
-        margin-bottom: 80px; /* pushes footer up above mobile keyboard */
-        gap: 4px;
+        margin-bottom: 20px; /* pushes footer up above mobile keyboard */
+        gap: 5px;
     }
 
     #nanoInput {

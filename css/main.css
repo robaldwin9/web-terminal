@@ -116,73 +116,10 @@ body::after {
      }
  }
 
-#nanoHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: white;
-    color: var(--bgcolor);
-    padding: 2px 8px;
+#output {
+    scrollbar-width: none; /* Firefox */
 }
 
-#nanoOverlay {
-    position: fixed;
-    inset: 0;
-    background: var(--bgcolor);
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    padding: 8px;
-    font-family: inherit;
-    font-size: inherit;
-    user-select: none;   /* no text selection anywhere on overlay */
-    /* remove pointer-events: none */
-}
-
-#nanoInput {
-    flex: 1;
-    background: var(--bgcolor);
-    color: var(--textcolor);
-    border: none;
-    outline: none;
-    padding: 8px;
-    font: inherit;
-    resize: none;
-    caret-color: var(--promptcolor);
-    user-select: text;   /* allow keyboard selection inside editor */
-    /* remove pointer-events: none */
-}
-
-#nanoFooter {
-    background: white;
-    color: var(--bgcolor);
-    padding: 2px 8px;
-    text-align: center;
-    font-size: inherit;
-}
-
-#nanoFooter {
-    display: flex;
-    flex-wrap: wrap;
-    background: var(--bgcolor);
-    padding: 2px 0;
-}
-
-.nanoShortcut {
-    display: flex;
-    align-items: center;
-    min-width: 16ch;
-    padding: 1px 4px;
-    gap: 4px;
-}
-
-.nanoKey {
-    background: #e0e0e0;
-    color: var(--bgcolor);
-    padding: 0 2px;
-    font-weight: bold;
-}
-
-.nanoLabel {
-    color: #e0e0e0;
+#output::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
 }

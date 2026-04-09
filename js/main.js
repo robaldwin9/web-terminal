@@ -2,18 +2,18 @@ const output = document.getElementById('output');
 const isAndroid = /android/i.test(navigator.userAgent);
 const isMobile = window.innerWidth < 1041;
 const BANNER = isAndroid ? BANNER_ANDROID : isMobile ? BANNER_MOBILE : BANNER_DESKTOP;
-var commandHistory = [];
-var historyIndex = -1;
-var activeInput = null;
-var tabMatches = [];
-var tabIndex = -1;
-var tabPartial = '';
+const commandHistory = [];
+let historyIndex = -1;
+let activeInput = null;
+let tabMatches = [];
+let tabIndex = -1;
+let tabPartial = '';
 
 // Focus on CLI unless user clicks on a link
 document.addEventListener(`click`, (event) => {
     if (event.target.tagName !== 'A' && activeInput) {
         activeInput.focus();
-    }  
+    }
 });
 
 // Clear CLI on page refresh
@@ -23,12 +23,16 @@ document.fonts.ready.then(() => {
 
 // Detect user input and update the output area
 document.addEventListener('keydown', (event) => {
+    if (document.getElementById('nanoOverlay')) {
+        return;
+    }
+
     if (event.key !== 'Tab') {
         tabMatches = [];
         tabIndex = -1;
         tabPartial = '';
     }
-    
+
     // Command submitted logic
     if (event.key === 'Enter' && event.target.classList.contains('cli')) {
         const command = event.target.value.trim();
@@ -48,29 +52,29 @@ document.addEventListener('keydown', (event) => {
                     appendPrompt();
                 }
             }
-        // No command new line is printed
+            // No command new line is printed
         } else {
             appendPrompt();
         }
 
-    // Arrow up press cycles back in command history
-    } else if (event.key === 'ArrowUp' && event.target.id !== `nanoInput`) {
-         event.preventDefault();
-         if (historyIndex < commandHistory.length - 1) {
-             historyIndex++;
-             activeInput.value = commandHistory[commandHistory.length - 1 - historyIndex];
-         }
+        // Arrow up press cycles back in command history
+    } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        if (historyIndex < commandHistory.length - 1) {
+            historyIndex++;
+            activeInput.value = commandHistory[commandHistory.length - 1 - historyIndex];
+        }
 
-     // Arrow down press cycles forward in history
-     } else if (event.key === 'ArrowDown' && event.target.id !== `nanoInput`) {
-         event.preventDefault();
-         if (historyIndex > -1) { 
-             historyIndex--;
-             activeInput.value = historyIndex === -1 ? '' : 
-             commandHistory[commandHistory.length - 1 - historyIndex];
-         }
-     // Tab cycles between available commands
-     } else if (event.key === 'Tab') {
+        // Arrow down press cycles forward in history
+    } else if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        if (historyIndex > -1) {
+            historyIndex--;
+            activeInput.value = historyIndex === -1 ? '' :
+                commandHistory[commandHistory.length - 1 - historyIndex];
+        }
+        // Tab cycles between available commands
+    } else if (event.key === 'Tab') {
         event.preventDefault();
         const partial = tabMatches.length ? tabPartial : activeInput.value;
         if (!partial) return;
@@ -87,7 +91,7 @@ document.addEventListener('keydown', (event) => {
         tabIndex = (tabIndex + 1) % tabMatches.length;
         activeInput.value = tabMatches[tabIndex];
         activeInput.focus();
-     }
+    }
 });
 
 // Segments allows coloring of any output string
@@ -113,9 +117,9 @@ function displayBaseContent() {
     appendPrompt();
 }
 
-// Appen link to output area
+// Append link to output area
 function appendLink(text, url, newLine = true) {
-    var link = document.createElement('a');
+    const link = document.createElement('a');
     link.href = url;
     link.textContent = text + " ";
     if (newLine) {
@@ -126,8 +130,8 @@ function appendLink(text, url, newLine = true) {
 }
 
 // Append output area
-function appendOutput(text, color = "#e0e0e0", newLine = true) {
-    let span = document.createElement('span');
+function appendOutput(text, color = COLOR.normal, newLine = true) {
+    const span = document.createElement('span');
     span.style.color = color;
     span.textContent = text;
     if (newLine) {
@@ -138,25 +142,25 @@ function appendOutput(text, color = "#e0e0e0", newLine = true) {
 }
 
 function appendPrompt() {
-  var prompt = document.createElement('span');
-  prompt.classList.add('prompt');
-  prompt.textContent = PROMPT_TEXT;
+    const prompt = document.createElement('span');
+    prompt.classList.add('prompt');
+    prompt.textContent = PROMPT_TEXT;
 
-  activeInput = document.createElement('input');  
-  activeInput.classList.add('cli');
-  activeInput.id = 'cli';
-  
-  var input = document.createElement('div');
-  input.classList.add('input');
-  input.appendChild(prompt);
-  input.appendChild(activeInput);
-  output.appendChild(input); 
-  activeInput.focus();
-  output.scrollTop = output.scrollHeight;
+    activeInput = document.createElement('input');
+    activeInput.classList.add('cli');
+    activeInput.id = 'cli';
+
+    const input = document.createElement('div');
+    input.classList.add('input');
+    input.appendChild(prompt);
+    input.appendChild(activeInput);
+    output.appendChild(input);
+    activeInput.focus();
+    output.scrollTop = output.scrollHeight;
 }
 
-// Displays the ascii art banner
-function appendBanner(text, color = "#39ff14") {
+// Displays the ASCII art banner
+function appendBanner(text, color = COLOR.success) {
     const pre = document.createElement('pre');
     pre.style.color = color;
     pre.textContent = text;
@@ -175,6 +179,3 @@ function appendIframe(url) {
     output.scrollTop = output.scrollHeight;
     return response([]);
 }
-
-
-

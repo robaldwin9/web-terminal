@@ -19,6 +19,9 @@ const commands = {
 };
 
 function parseCommand(command) {
+    if (command.startsWith('./')) {
+        return runFile(command.slice(2).split(' '));
+    }
     const [name, ...args] = command.split(' ');
     const cmd = commands[name];
     return cmd ? cmd.fn(args) : notFound(name);
@@ -74,10 +77,12 @@ function createFile(args) {
 
 function listFiles() {
     const files = Object.keys(filesystem);
-    if (files.length === 0) {
-        return response([segment("")]);
-    }
-    return response([segment(files.join('\n'))]);
+    if (files.length === 0) return response([segment("")]);
+
+    const segments = files.map(filename =>
+        segment(filename + '\n', filename.endsWith('.js') ? COLOR.success : COLOR.normal)
+    );
+    return response(segments);
 }
 
 function concatFiles(args) {
@@ -116,4 +121,27 @@ function segment(text = '', color = COLOR.normal) {
 
 function response(segments, prompt = true) {
     return {segments, prompt};
+}
+
+
+function runFile(args) {
+    const filename = args[0];
+    const scriptArgs = args.slice(1);
+    if (!filename) {
+        return response([segment(`usage: ./<filename>`, COLOR.error)]);
+    }
+
+    if (filesystem[filename] === undefined) {
+        return response([segment(`${filename}: no such file`, COLOR.error)]);
+    }
+
+    try {
+        const logs = [];
+        const print = (...a) => logs.push(a.join(' '));
+        const fn = new Function('args', 'print', filesystem[filename]);
+        fn(scriptArgs, print);
+        return response([segment(logs.join('\n'), COLOR.normal)]);
+    } catch(e) {
+        return response([segment(e.message, COLOR.error)]);
+    }
 }

@@ -1,5 +1,3 @@
-const filesystem = JSON.parse(localStorage.getItem('filesystem') || '{}');
-
 const commands = {
     help: {fn: () => help(), desc: 'Shows this help message'},
     clear: {fn: () => clear(), desc: 'Clears the terminal'},
@@ -15,7 +13,10 @@ const commands = {
     touch: {fn: (args) => createFile(args), desc: 'Creates a new file'},
     cat: {fn: (args) => concatFiles(args), desc: 'Displays contents of a file'},
     nano: {fn: (args) => nano(args), desc: 'Edit a file'},
-    rm: {fn: (args) => remove(args[0]), desc: 'Remove files'}
+    rm: {fn: (args) => remove(args[0]), desc: 'Remove files'},
+    mkdir: {fn: (args) => makeDirectory(args), desc: 'Creates a new directory'},
+    cd: {fn: (args) => changeDirectory(args), desc: `Change current directory`},
+    pwd: {fn: (args) => printWorkingDirectory(), desc: 'Print working directory'}
 };
 
 function parseCommand(command) {
@@ -66,24 +67,37 @@ function historyCommand() {
 }
 
 function createFile(args) {
-    let filename = args[0]
+    const filename = args[0];
     if (!filename) {
-        return response([segment('usage: touch <filename>', COLOR.error)]);
+      return response([segment('usage: touch <filename>', COLOR.error)]);
     }
-    filesystem[filename] = '';
-    localStorage.setItem('filesystem', JSON.stringify(filesystem));
-    return response([segment(`created ${filename}`)]);
+
+    const {parent, name} = getParent(resolvePath(filename));
+    if (!parent || paretn.type !== 'dir') {
+      return response ([segment(`touch: cannot create file ${filename}`, COLOR.error)]);
+    }
+
+    if (!parent.children[name]) {
+        parent.children[name] = makeFile();
+    } else {
+        parent.childtren[name].modified = Date.now();
+        saveFileSystem();
+        return response([segment('')])
+    }
 }
 
 function listFiles() {
-    const files = Object.keys(filesystem);
-    if (files.length === 0) return response([segment("")]);
-
-    const segments = files.map(filename =>
-        segment(filename + '\n', filename.endsWith('.js') ? COLOR.success : COLOR.normal)
+  const dir = getNode(cwd);
+  const entries = Object.entries(dir.children);
+  if (entries.length === 0) {
+    return response([segment('')]);
+  }
+    const segments = entries.map(([name, node]) =>
+        segment(name + '\n', node.type === 'dir' ? blue : name.endsWith('.js') ? COLOR.success : COLOR.normal)
     );
+
     return response(segments);
-}
+ }
 
 function concatFiles(args) {
     if (args.length === 0) {

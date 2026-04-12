@@ -4,7 +4,7 @@ function loadFileSystem() {
       const fs = localStorage.getItem(`filesystem`); 
       return !fs || fs?.type !== 'dir' ? makeRoot() : fs;
     } catch {
-        makeRoot();
+       return makeRoot();
     }
 }
 
@@ -12,7 +12,7 @@ function saveFileSystem() {
    localStorage.setItem(`filesystem`, JSON.stringify(filesystem));
 }
 
-const filesystem = loadFilesystem();
+const filesystem = loadFilesSystem();
 let cwd = '/'
 
 function makeRoot() {
@@ -25,7 +25,8 @@ function getNode(absPath) {
     return filesystem;
   }
 
-  const parts = absPath.split('/')
+  const parts = absPath.split('/').filter(Boolean)
+  let node = 
   for (const part of parts) {
     if (node.type !== 'dir' {
        return null;
@@ -53,7 +54,7 @@ function getParent(absPath) {
     return {parent: getNode(parentPath), name };
 }
 
-function resolvePath(input) {
+function resolvePath(inputPath) {
   const base = inputPath.startsWith('/') ? [] : cwd.split('/').filter(Boolean);
     const parts = [...base, ...inputPath.split('/').filter(Boolean)];
 
@@ -77,4 +78,10 @@ function makeFile(content = '') {
 
 function makeDir() {
   return {type: 'dir', children: {}, created: Date.now() };
+}
+
+function getPromptText() {
+    const display = cwd === '/' ? '~' : '~' + cwd;
+    return `robaldwin@todoprgramming:${display}$ `;
+
 }

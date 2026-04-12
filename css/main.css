@@ -9,7 +9,7 @@ body {
     font-size: clamp(13px, 1.5vw, 18px);
     display: flex;
     flex-direction: column;
-    height : 100dvh;
+    height: 100dvh;
     margin: 0;
     font-family: "Courier Prime", monospace;
     letter-spacing: 0;
@@ -23,15 +23,14 @@ body::after {
     content: "";
     position: fixed;
     inset: 0;
-    background:
-        repeating-linear-gradient(
+    background: repeating-linear-gradient(
             0deg,
             transparent 0px,
             transparent 2px,
             rgba(57, 255, 20, 0.04) 2px,
             rgba(57, 255, 20, 0.04) 3px
-        ),
-        radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.75) 100%);
+    ),
+    radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.75) 100%);
     pointer-events: none;
     z-index: 999;
 }
@@ -43,7 +42,7 @@ body::after {
 }
 
 .input {
-    display :flex;
+    display: flex;
     align-items: center;
     background-color: var(--bgcolor);
 }
@@ -52,15 +51,15 @@ body::after {
     font-size: clamp(13px, 1.5vw, 18px);
     background-color: var(--bgcolor);
     color: var(--textcolor);
-    height: 5vh;
     flex: 1;
     border: none;
-    outline : none;
+    outline: none;
     caret-color: var(--promptcolor);
     font-family: "Courier Prime", monospace;
-
+    line-height: 1.2;
+    padding: 0;
 }
- 
+
 .prompt {
     font-size: clamp(13px, 1.5vw, 18px);
     background-color: var(--bgcolor);
@@ -80,10 +79,18 @@ body::after {
     scrollbar-width: thin;
     scrollbar-color: var(--promptcolor) var(--bgcolor);
 }
- 
-#output::-webkit-scrollbar { width: 4px; }
-#output::-webkit-scrollbar-track { background: var(--bgcolor); }
-#output::-webkit-scrollbar-thumb { background: var(--promptcolor); }
+
+#output::-webkit-scrollbar {
+    width: 4px;
+}
+
+#output::-webkit-scrollbar-track {
+    background: var(--bgcolor);
+}
+
+#output::-webkit-scrollbar-thumb {
+    background: var(--promptcolor);
+}
 
 #output a {
     color: var(--linkcolor);
@@ -100,23 +107,23 @@ body::after {
 }
 
 @media (max-width: 600px) {
-     body {
-         font-size: 14px;
-     }
+    body {
+        font-size: 14px;
+    }
 
     #output {
-         white-space: pre-wrap;
-     }
+        white-space: pre-wrap;
+    }
 
     #output a {
         letter-spacing: 0.05em;
         margin-right: 8px;
     }
- 
-     .cli {
-         //font-size: 16px;
-     }
- }
+
+    .cli {
+    / / font-size: 16 px;
+    }
+}
 
 #output {
     scrollbar-width: none; /* Firefox */

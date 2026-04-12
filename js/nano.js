@@ -17,6 +17,13 @@ function nano(args) {
     dom.editor.focus();
 }
 
+function closeNano(dom, syncHeight) {
+    window.visualViewport.removeEventListener('resize', syncHeight);
+    window.visualViewport.removeEventListener('scroll', syncHeight);
+    dom.overlay.remove();
+    appendPrompt();
+}
+
 /**
  * Handles event listers
  *
@@ -43,18 +50,22 @@ function bindNanoEvents(dom) {
             // Exit Nano
         } else if (event.ctrlKey && event.key === 'x') {
             event.preventDefault();
-            window.visualViewport.removeEventListener('resize', syncHeight);
-            window.visualViewport.removeEventListener('scroll', syncHeight);
-            dom.overlay.remove();
-            appendPrompt();
+            closeNano(dom, syncHeight);
 
             // Handle saving file
         } else if (event.key === `Enter` && dom.promptContainer.style.display === `flex`) {
             event.preventDefault();
-            filesystem[dom.promptInput.value] = dom.editor.value;
-            localStorage.setItem('filesystem', JSON.stringify(filesystem));
+            const result = writeFile(dom.promptInput.value, dom.editor.value);
+
+            if (!result.ok) {
+                appendOutput(result.message, COLOR.error);
+                closeNano(dom, syncHeight);
+                return;
+            }
+
             dom.promptContainer.style.display = 'none';
-            dom.editor.focus()
+            dom.editor.focus();
+
 
             // Cancel file save
         } else if (event.key === 'Escape' && dom.promptContainer.style.display === 'flex') {
@@ -120,7 +131,7 @@ function createNanoDom(filename) {
     // Create area where user types
     const editor = document.createElement('textarea');
     editor.id = "nanoInput"
-    editor.value = filesystem[filename] || ''
+    editor.value = filename ? (readFile(filename) ?? '') : '';
 
     // Append all elements
     overlay.append(header, editor, nanoPromptContainer, footer);
@@ -151,8 +162,10 @@ function createShortcut(key, label, keyChar, overlay) {
 
     // Click events for mobile support
     itemSpan.addEventListener('click', () => {
-        const event = new KeyboardEvent('keydown', { key: keyChar,
-            ctrlKey: true, bubbles: true });
+        const event = new KeyboardEvent('keydown', {
+            key: keyChar,
+            ctrlKey: true, bubbles: true
+        });
         overlay.dispatchEvent(event);
     });
 

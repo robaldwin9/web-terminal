@@ -8,6 +8,8 @@ let activeInput = null;
 let tabMatches = [];
 let tabIndex = -1;
 let tabPartial = '';
+let tabApply = null;
+let tabSeed = '';
 
 // Focus on CLI unless user clicks on a link
 document.addEventListener(`click`, (event) => {
@@ -31,6 +33,8 @@ document.addEventListener('keydown', (event) => {
         tabMatches = [];
         tabIndex = -1;
         tabPartial = '';
+        tabSeed = '';
+        tabApply = null;
     }
 
     // Command submitted logic
@@ -76,25 +80,29 @@ document.addEventListener('keydown', (event) => {
         // Tab cycles between available commands
     } else if (event.key === 'Tab') {
         event.preventDefault();
-        const partial = tabMatches.length ? tabPartial : activeInput.value;
-        if (!partial) return;
-
-        const currentMatches = Object.keys(commands).filter(name => name.startsWith(partial));
-        if (currentMatches.length === 0) return;
 
         if (!tabMatches.length) {
-            tabPartial = partial;
-            tabMatches = currentMatches;
+            const completion = completeInput(activeInput.value);
+            if (completion.matches.length === 0) return;
+
+            tabSeed = completion.partial;
+            tabPartial = completion.partial;
+            tabMatches = completion.matches;
+            tabApply = completion.apply;
             tabIndex = -1;
         }
 
         tabIndex = (tabIndex + 1) % tabMatches.length;
-        activeInput.value = tabMatches[tabIndex];
+        activeInput.value = tabApply(tabMatches[tabIndex]);
         activeInput.focus();
     }
 });
 
-// Segments allows coloring of any output string
+/**
+ * Append output segments to the DOM
+ *
+ * @param segments array of text segments, allows to have different colors on individual pieces of output
+ */
 function appendSegments(segments) {
     segments.forEach(({text, color}) => {
         const span = document.createElement('span');
@@ -105,7 +113,9 @@ function appendSegments(segments) {
     output.scrollTop = output.scrollHeight;
 }
 
-// Displays content that is always at the top of the page
+/**
+ * Displays content that is always at the top of the page
+ */
 function displayBaseContent() {
     appendBanner(BANNER);
     appendLink("[Wiki]", WIKI_URL, false);
@@ -117,7 +127,13 @@ function displayBaseContent() {
     appendPrompt();
 }
 
-// Append link to output area
+/**
+ * Adds a link to the DOM
+ *
+ * @param text link text
+ * @param url link URL
+ * @param newLine should new line be appended
+ */
 function appendLink(text, url, newLine = true) {
     const link = document.createElement('a');
     link.href = url;
@@ -129,7 +145,13 @@ function appendLink(text, url, newLine = true) {
     output.scrollTop = output.scrollHeight;
 }
 
-// Append output area
+/**
+ * helper functions for appending output text to the DOM
+ *
+ * @param text output text
+ * @param color text color
+ * @param newLine should new line be appended
+ */
 function appendOutput(text, color = COLOR.normal, newLine = true) {
     const span = document.createElement('span');
     span.style.color = color;
@@ -141,10 +163,13 @@ function appendOutput(text, color = COLOR.normal, newLine = true) {
     output.scrollTop = output.scrollHeight;
 }
 
+/**
+ * Adds a new prompt to the CLI, this is the user input line
+ */
 function appendPrompt() {
     const prompt = document.createElement('span');
     prompt.classList.add('prompt');
-    prompt.textContent = PROMPT_TEXT;
+    prompt.textContent = getPromptText();
 
     activeInput = document.createElement('input');
     activeInput.classList.add('cli');
@@ -159,7 +184,13 @@ function appendPrompt() {
     output.scrollTop = output.scrollHeight;
 }
 
-// Displays the ASCII art banner
+
+/**
+ * Add top level ASCII text banner to the DOM
+ *
+ * @param text ASCII to display
+ * @param color color of ASCII text
+ */
 function appendBanner(text, color = COLOR.success) {
     const pre = document.createElement('pre');
     pre.style.color = color;
@@ -168,7 +199,12 @@ function appendBanner(text, color = COLOR.success) {
     output.scrollTop = output.scrollHeight;
 }
 
-// Embeds a website in the terminal.
+/**
+ * Embeds a website in the terminal.
+ *
+ * @param url website url
+ * @returns {{segments: *, prompt: boolean}} segmented response
+ */
 function appendIframe(url) {
     const iframe = document.createElement(`iframe`);
     iframe.src = url;
@@ -178,4 +214,70 @@ function appendIframe(url) {
     output.appendChild(iframe);
     output.scrollTop = output.scrollHeight;
     return response([]);
+}
+
+/**
+ *
+ * @param value
+ * @returns {{partial: *, matches: [], apply: function(): *}|{partial: *, matches: string[], apply: function(*): *}|{partial: *, matches: string[], apply: function(*): *}}
+ */
+function completeInput(value) {
+    const trimmedStart = value.trimStart();
+
+    if (!trimmedStart.includes(' ') && !trimmedStart.startsWith('./')) {
+        return {
+            partial: value,
+            matches: Object.keys(commands).filter(name => name.startsWith(value)),
+            apply: (match) => match,
+        };
+    }
+
+    return getPathCompletion(value);
+}
+
+/**
+ *
+ * @param value
+ * @returns {{partial: *, matches: string[], apply: function(*): *}|{partial: *, matches: *[], apply: function(): *}}
+ */
+function getPathCompletion(value) {
+    const lastSpace = value.lastIndexOf(' ');
+    const base = lastSpace === -1 ? '' : value.slice(0, lastSpace + 1);
+    const partialPath = value.slice(lastSpace + 1);
+
+    const endsWithSlash = partialPath.endsWith('/');
+    const absPath = resolvePath(partialPath || '.');
+    const parentInfo = endsWithSlash ? { parent: getNode(absPath), name: '' } :
+        getParent(absPath);
+
+    if (!parentInfo?.parent || parentInfo.parent.type !== 'dir') {
+        return { partial: partialPath, matches: [], apply: () => value };
+    }
+
+    const prefix = endsWithSlash ? '' : parentInfo.name;
+    const matches = Object.entries(parentInfo.parent.children)
+        .filter(([name]) => name.startsWith(prefix))
+        .map(([name, node]) => `${name}${node.type === 'dir' ? '/' : ''}`);
+
+    return {
+        partial: partialPath,
+        matches,
+        apply: (match) => base + buildCompletedPath(partialPath, match),
+    };
+
+}
+
+/**
+ *
+ * @param partialPath
+ * @param match
+ * @returns {*}
+ */
+function buildCompletedPath(partialPath, match) {
+    const slashIndex = partialPath.lastIndexOf('/');
+    if (slashIndex === -1) {
+        return match;
+    }
+
+    return partialPath.slice(0, slashIndex + 1) + match;
 }

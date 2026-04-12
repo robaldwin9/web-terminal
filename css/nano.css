@@ -32,6 +32,7 @@
     user-select: text;
     scrollbar-width: none;
 }
+
 #nanoInput::-webkit-scrollbar {
     display: none;
 }

@@ -137,7 +137,7 @@ function displayBaseContent() {
 function appendLink(text, url, newLine = true) {
     const link = document.createElement('a');
     link.href = url;
-    link.textContent = text + " ";
+    link.textContent = text;
     if (newLine) {
         link.textContent += "\n";
     }

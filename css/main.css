@@ -38,6 +38,7 @@ body::after {
 #output pre {
     font-family: "Noto Sans Mono", monospace;
     font-size: inherit;
+    line-height: 1;
     margin: 0 0 12px 0;
 }
 
@@ -73,6 +74,7 @@ body::after {
     background-color: var(--bgcolor);
     color: var(--promptcolor);
     flex: 1;
+    padding: 0.75rem 1rem 0;
     white-space: pre;
     overflow-y: auto;
     scroll-behavior: smooth;
@@ -93,6 +95,8 @@ body::after {
 }
 
 #output a {
+    font-family: "Courier Prime", monospace;
+    font-size: 18px;
     color: var(--linkcolor);
     text-decoration: none;
     display: inline-block;
